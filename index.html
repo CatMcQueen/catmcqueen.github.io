@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>Use NLTK to Write Your Own Sherlock Novel</title> 
+<head><title>Use LSTMs to Write Your Own Sherlock Novel</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
@@ -18,7 +18,7 @@
 
                                                                   
 
-<h2 class="titleHead">Use NLTK to Write Your Own Sherlock Novel</h2>
+<h2 class="titleHead">Use LSTMs to Write Your Own Sherlock Novel</h2>
 <div class="author" ><span 
 class="ptmr7t-x-x-120">Cat McQueen</span></div><br />
 <div class="date" ><span 
@@ -62,11 +62,11 @@ href="#x1-170006" id="QQ2-1-20">Create and Run Model</a></span>
 <br />   &#x00A0;<span class="subsectionToc" >6.1 <a 
 href="#x1-180006.1" id="QQ2-1-21">Create Model</a></span>
 <br />   &#x00A0;<span class="subsectionToc" >6.2 <a 
-href="#x1-190006.2" id="QQ2-1-22">Writing Inline One-Hot Encoding</a></span>
+href="#x1-190006.2" id="QQ2-1-23">Writing Inline One-Hot Encoding</a></span>
 <br />   &#x00A0;<span class="subsectionToc" >6.3 <a 
-href="#x1-200006.3" id="QQ2-1-24">Speed Up Using Tensor GPU</a></span>
+href="#x1-200006.3" id="QQ2-1-25">Speed Up Using Tensor GPU</a></span>
 <br />   &#x00A0;<span class="subsectionToc" >6.4 <a 
-href="#x1-210006.4" id="QQ2-1-26">Using Model Generate Text</a></span>
+href="#x1-210006.4" id="QQ2-1-27">Using Model Generate Text</a></span>
    </div>
                                                                   
 
@@ -94,7 +94,7 @@ href="#x1-2001r1">1<!--tex4ht:ref: fig:home --></a>
                                                                   
 <!--l. 41--><p class="noindent" ><img 
 src="ColabHome.png" alt="PIC"  
- height="400">
+height="400">
 <br /> <div class="caption" 
 ><span class="id">Figure&#x00A0;1: </span><span  
 class="content">Colab Homepage</span></div><!--tex4ht:label?: x1-2001r1 -->
@@ -127,7 +127,7 @@ type
 
                                                                   
    <div class="verbatim" id="verbatim-1">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;print('hello&#x00A0;world')
+print('hello&#x00A0;world')
 </div>
 <!--l. 62--><p class="nopar" >Then while still inside the text box, press shift and Enter. This will run the code within the
 box you are currently in.
@@ -145,7 +145,7 @@ upload sherlock.txt to our setup so we can call it in our python script.
                                                                   
 <!--l. 70--><p class="noindent" ><img 
 src="FileFolder.png" alt="PIC"  
- height="200">
+height="200">
 <br /> <div class="caption" 
 ><span class="id">Figure&#x00A0;2: </span><span  
 class="content">The File Upload Bar</span></div><!--tex4ht:label?: x1-4001r2 -->
@@ -193,7 +193,7 @@ Run
 
                                                                   
    <div class="verbatim" id="verbatim-2">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;%cd&#x00A0;drive/My&#x00A0;Drive/
+%cd&#x00A0;drive/My&#x00A0;Drive/
 </div>
 <!--l. 93--><p class="nopar" >
 <!--l. 95--><p class="indent" >   If you have saved sherlock.txt within another folder in Google Drive, append the folder
@@ -210,20 +210,22 @@ webpage.
 
                                                                   
    <div class="verbatim" id="verbatim-3">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;!git&#x00A0;clone&#x00A0;-n&#x00A0;https://github.com/CatMcQueen/catmcqueen.github.io.git&#x00A0;--depth&#x00A0;1
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;%cd&#x00A0;catmcqueen.github.io
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;!git&#x00A0;checkout&#x00A0;HEAD&#x00A0;sherlock.txt
+!git&#x00A0;clone&#x00A0;-n&#x00A0;\
+&#x00A0;<br />https://github.com/CatMcQueen/catmcqueen.github.io.git
+&#x00A0;<br />--depth&#x00A0;1
+&#x00A0;<br />%cd&#x00A0;catmcqueen.github.io
+&#x00A0;<br />!git&#x00A0;checkout&#x00A0;HEAD&#x00A0;sherlock.txt
 </div>
-<!--l. 105--><p class="nopar" >
-<!--l. 107--><p class="indent" >   This will checkout the file sherlock.txt from the repository, and allow us to call it in our
+<!--l. 107--><p class="nopar" >
+<!--l. 109--><p class="indent" >   This will checkout the file sherlock.txt from the repository, and allow us to call it in our
 local system. Since it is part of our code, it will check it out every time we run
 through the code; therefore, it does not require we reload data every runtime. It also
 does not require you to ever download sherlock.txt to your own machine or Google
 Drive.
-<!--l. 109--><p class="noindent" >
+<!--l. 111--><p class="noindent" >
    <h3 class="sectionHead"><span class="titlemark">3    </span> <a 
  id="x1-70003"></a>Read and Process File</h3>
-<!--l. 111--><p class="noindent" >The first thing we are going to do is to read the text file in, and look at the data given. Now
+<!--l. 113--><p class="noindent" >The first thing we are going to do is to read the text file in, and look at the data given. Now
 that we have the sherlock.txt in our local runtime, read the file into a variable. Remember to
 close the file after loading the data.
                                                                   
@@ -239,61 +241,61 @@ close the file after loading the data.
 &#x00A0;<br />#&#x00A0;close&#x00A0;the&#x00A0;file
 &#x00A0;<br />file.close()
 </div>
-<!--l. 122--><p class="nopar" >
-<!--l. 124--><p class="indent" >   Now that you have the file, we are going to process it. This entails 1) removing
+<!--l. 124--><p class="nopar" >
+<!--l. 126--><p class="indent" >   Now that you have the file, we are going to process it. This entails 1) removing
 punctuation and numbers, 2) removing any unnecessary white space, 3) reformatting into
 sentences, instead of lines. Once the data is processed, we can tokenize it and begin to use the
 data.
-<!--l. 127--><p class="noindent" >
+<!--l. 129--><p class="noindent" >
    <h4 class="subsectionHead"><span class="titlemark">3.1    </span> <a 
  id="x1-80003.1"></a>1: Removing White Space and Punctuation</h4>
-<!--l. 129--><p class="noindent" >Since we read the file in from text, there is a chance there is both leading white space(at the
+<!--l. 131--><p class="noindent" >Since we read the file in from text, there is a chance there is both leading white space(at the
 beginning of the file) and empty lines. We read the file in all at once, so we are going to
 process the text as a whole.
-<!--l. 131--><p class="noindent" >
+<!--l. 133--><p class="noindent" >
    <h4 class="subsectionHead"><span class="titlemark">3.2    </span> <a 
  id="x1-90003.2"></a>Remove all Leading White Space:</h4>
-<!--l. 133--><p class="noindent" >To remove the leading white space at the beginning of the file (we don&#8217;t want our first token
+<!--l. 135--><p class="noindent" >To remove the leading white space at the beginning of the file (we don&#8217;t want our first token
 to be a space), we will run a regular expression to eliminate it.
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-5">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;import&#x00A0;re
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;sherlock_text1&#x00A0;&#x00A0;=&#x00A0;re.sub('^\s+',&#x00A0;'',&#x00A0;sherlock_txt)
+import&#x00A0;re
+&#x00A0;<br />sherlock_text1&#x00A0;&#x00A0;=&#x00A0;re.sub('^\s+',&#x00A0;'',&#x00A0;sherlock_txt)
 </div>
-<!--l. 137--><p class="nopar" >
-<!--l. 139--><p class="indent" >   re allows us to do a substitution, with re(x, y) replacing anything matching the x pattern
+<!--l. 139--><p class="nopar" >
+<!--l. 141--><p class="indent" >   re allows us to do a substitution, with re(x, y) replacing anything matching the x pattern
 with y. The carat in regular expressions represents a new line, and the s is all spaces, with the
 + meaning that there has to be at least 1 for it to match. This regular expression, then, is
 replacing anything number of spaces at the beginning of the file with an empty vector. In
 practice, this removes all leading space characters.
-<!--l. 141--><p class="noindent" >
+<!--l. 143--><p class="noindent" >
    <h4 class="subsectionHead"><span class="titlemark">3.3    </span> <a 
  id="x1-100003.3"></a>Remove all Formatting Spaces:</h4>
-<!--l. 143--><p class="noindent" >Next we&#8217;ll remove all tabs, empty lines, and other forms of white space and replace them
+<!--l. 145--><p class="noindent" >Next we&#8217;ll remove all tabs, empty lines, and other forms of white space and replace them
 with a single space. Since tokenizing often breaks on spaces, a single space between words is
 the standard. In the same fashion as before, we&#8217;ll use re.sub.
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-6">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;sherlock_text2&#x00A0;=&#x00A0;re.sub(r'\s+',&#x00A0;'&#x00A0;',&#x00A0;sherlock_text1)
+sherlock_text2&#x00A0;=&#x00A0;re.sub(r'\s+',&#x00A0;'&#x00A0;',&#x00A0;sherlock_text1)
 </div>
-<!--l. 146--><p class="nopar" >In this case, r&#8217; means to not use the backslash as a literal character, but to use it as part of the
+<!--l. 148--><p class="nopar" >In this case, r&#8217; means to not use the backslash as a literal character, but to use it as part of the
 spaces.
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-7">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;'\s+'
+'\s+'
 &#x00A0;<br />&#x00A0;
 </div>
-<!--l. 150--><p class="nopar" >represents all whitespaces, so we are replacing all white spaces with a single space.
-<!--l. 153--><p class="noindent" >
+<!--l. 152--><p class="nopar" >represents all whitespaces, so we are replacing all white spaces with a single space.
+<!--l. 155--><p class="noindent" >
    <h4 class="subsectionHead"><span class="titlemark">3.4    </span> <a 
  id="x1-110003.4"></a>Remove all Punctuation:</h4>
-<!--l. 155--><p class="noindent" >When we are generating text, we will not use this; however, for analyzing what words are
+<!--l. 157--><p class="noindent" >When we are generating text, we will not use this; however, for analyzing what words are
 most used and learning the data, we will want to remove punctuation, as they are the most
 common &#8221;words&#8221; in our corpus, and can be considered stopwords (words too common in text
 to be valuable to know) in that sense.
@@ -301,44 +303,44 @@ to be valuable to know) in that sense.
 
                                                                   
    <div class="verbatim" id="verbatim-8">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;sherlock_nopunc&#x00A0;=&#x00A0;re.sub('[^a-zA-Z&#x00A0;]',&#x00A0;'',&#x00A0;sherlock_text2)
+sherlock_nopunc&#x00A0;=&#x00A0;re.sub('[^a-zA-Z&#x00A0;]',&#x00A0;'',&#x00A0;sherlock_text2)
 &#x00A0;<br />&#x00A0;
 </div>
-<!--l. 158--><p class="nopar" >The carat in this set is a negator. Therefore, we are removing everything that is not also in the
+<!--l. 160--><p class="nopar" >The carat in this set is a negator. Therefore, we are removing everything that is not also in the
 brackets. [a-zA-Z] represents the set of all letters, lower and upper case. To make sure that we
 are also retaining the spaces that we have inserted, there is also a space in the set. If we did
 not include the space in this set, then all of the spaces would be removed from the text as
 well.
-<!--l. 161--><p class="noindent" >
+<!--l. 163--><p class="noindent" >
    <h3 class="sectionHead"><span class="titlemark">4    </span> <a 
  id="x1-120004"></a>Analyze Corpus</h3>
-<!--l. 164--><p class="noindent" >
+<!--l. 166--><p class="noindent" >
    <h4 class="subsectionHead"><span class="titlemark">4.1    </span> <a 
  id="x1-130004.1"></a>Identify Word Based Data:</h4>
-<!--l. 166--><p class="noindent" >To do this we want to use our filtered dataset, tokenize it, and then do some analysis on what
+<!--l. 168--><p class="noindent" >To do this we want to use our filtered dataset, tokenize it, and then do some analysis on what
 our max used data is. To tokenize our document, we will use the word tokenize function from
 NLTK.
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-9">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;from&#x00A0;nltk.corpus&#x00A0;import&#x00A0;stopwords
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;from&#x00A0;nltk.tokenize&#x00A0;import&#x00A0;sent_tokenize,&#x00A0;word_tokenize
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;stopwords&#x00A0;=&#x00A0;set(stopwords.words('english'))
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;allwords&#x00A0;=&#x00A0;word_tokenize(sherlock_nopunc.lower())
+from&#x00A0;nltk.corpus&#x00A0;import&#x00A0;stopwords
+&#x00A0;<br />from&#x00A0;nltk.tokenize&#x00A0;import&#x00A0;sent_tokenize,&#x00A0;word_tokenize
+&#x00A0;<br />stopwords&#x00A0;=&#x00A0;set(stopwords.words('english'))
+&#x00A0;<br />allwords&#x00A0;=&#x00A0;word_tokenize(sherlock_nopunc.lower())
 &#x00A0;<br />&#x00A0;
 </div>
-<!--l. 172--><p class="nopar" >Once re have all of our words, we will want to remove all the stopwords (words that
+<!--l. 174--><p class="nopar" >Once re have all of our words, we will want to remove all the stopwords (words that
 are too common to be useful in learning about your dataset&#8211;think &#8217;the&#8217;, &#8217;a&#8217;, &#8217;and&#8217;,
 etc).
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-10">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;clean_words&#x00A0;=&#x00A0;[k&#x00A0;for&#x00A0;k&#x00A0;in&#x00A0;allwords&#x00A0;if&#x00A0;k&#x00A0;not&#x00A0;in&#x00A0;stopwords]
+clean_words&#x00A0;=&#x00A0;[k&#x00A0;for&#x00A0;k&#x00A0;in&#x00A0;allwords&#x00A0;if&#x00A0;k&#x00A0;not&#x00A0;in&#x00A0;stopwords]
 &#x00A0;<br />&#x00A0;
 </div>
-<!--l. 176--><p class="nopar" >We here are taking only the words that are not in stopwords and putting them in a list. Now
+<!--l. 178--><p class="nopar" >We here are taking only the words that are not in stopwords and putting them in a list. Now
 we can analyze our list and get the most commonly used words. For right now, I only care
 about the 20 most used words, so we are going to create a Counter (which creates a dictionary
 of word, index pairs and gives context information about them. Counter has a function called
@@ -348,90 +350,90 @@ words.
 
                                                                   
    <div class="verbatim" id="verbatim-11">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;from&#x00A0;collections&#x00A0;import&#x00A0;Counter
+from&#x00A0;collections&#x00A0;import&#x00A0;Counter
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;most_frequent(inlist,&#x00A0;maxlist=10):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;occurence_count&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;Counter(inlist)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;pairs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;occurence_count.most_common(maxlist)#[0][0]
+&#x00A0;<br />def&#x00A0;most_frequent(inlist,&#x00A0;maxlist=10):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;occurence_count&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;Counter(inlist)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;pairs&#x00A0;=&#x00A0;occurence_count.most_common(maxlist)#[0][0]
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;[]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common_counts&#x00A0;=&#x00A0;[]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;x&#x00A0;in&#x00A0;range(maxlist):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common.append(pairs[x][0])
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common_counts.append(pairs[x][1])
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;most_common,&#x00A0;most_common_counts
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;[]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common_counts&#x00A0;=&#x00A0;[]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;x&#x00A0;in&#x00A0;range(maxlist):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common.append(pairs[x][0])
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common_counts.append(pairs[x][1])
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;most_common,&#x00A0;most_common_counts
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;top_words,&#x00A0;word_counts&#x00A0;=&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_frequent(clean_words)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;print(top_words)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;print(word_counts)
+&#x00A0;<br />top_words,&#x00A0;word_counts&#x00A0;=&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_frequent(clean_words)
+&#x00A0;<br />print(top_words)
+&#x00A0;<br />print(word_counts)
 </div>
-<!--l. 196--><p class="nopar" >When you run this cell, you should see two lists. The first is printing out the most used words,
+<!--l. 198--><p class="nopar" >When you run this cell, you should see two lists. The first is printing out the most used words,
 and the second is printing out the number of times each of those is used. The output of mine
 is:
-<!--l. 200--><p class="indent" >   [&#8217;said&#8217;, &#8217;holmes&#8217;, &#8217;upon&#8217;, &#8217;one&#8217;, &#8217;would&#8217;, &#8217;man&#8217;, &#8217;could&#8217;, &#8217;mr&#8217;, &#8217;us&#8217;, &#8217;well&#8217;]
-<!--l. 202--><p class="indent" >   [2734, 2386, 2302, 2217, 1900, 1826, 1639, 1389, 1340, 1268]
-<!--l. 204--><p class="indent" >   These are the top 10 used words in our document. Interestingly, if you don&#8217;t force it to be
+<!--l. 202--><p class="indent" >   [&#8217;said&#8217;, &#8217;holmes&#8217;, &#8217;upon&#8217;, &#8217;one&#8217;, &#8217;would&#8217;, &#8217;man&#8217;, &#8217;could&#8217;, &#8217;mr&#8217;, &#8217;us&#8217;, &#8217;well&#8217;]
+<!--l. 204--><p class="indent" >   [2734, 2386, 2302, 2217, 1900, 1826, 1639, 1389, 1340, 1268]
+<!--l. 206--><p class="indent" >   These are the top 10 used words in our document. Interestingly, if you don&#8217;t force it to be
 lowercase on allwords, the output is
-<!--l. 206--><p class="indent" >   [&#8217;I&#8217;, &#8217;said&#8217;, &#8217;Holmes&#8217;, &#8217;The&#8217;, &#8217;upon&#8217;, &#8217;It&#8217;, &#8217;He&#8217;, &#8217;one&#8217;, &#8217;would&#8217;, &#8217;man&#8217;]
-<!--l. 208--><p class="indent" >   [14361, 2734, 2383, 2380, 2288, 2122, 2062, 2033, 1864, 1807]
-<!--l. 210--><p class="indent" >   As you can see, the stopwords are only in the lowercase, so filtering the list without
+<!--l. 208--><p class="indent" >   [&#8217;I&#8217;, &#8217;said&#8217;, &#8217;Holmes&#8217;, &#8217;The&#8217;, &#8217;upon&#8217;, &#8217;It&#8217;, &#8217;He&#8217;, &#8217;one&#8217;, &#8217;would&#8217;, &#8217;man&#8217;]
+<!--l. 210--><p class="indent" >   [14361, 2734, 2383, 2380, 2288, 2122, 2062, 2033, 1864, 1807]
+<!--l. 212--><p class="indent" >   As you can see, the stopwords are only in the lowercase, so filtering the list without
 converting it to lower removes the filtering on the uppercase versions of the stop
 words.
-<!--l. 212--><p class="indent" >   Unsurprisingly, without filtering for stopwords, the output is
-<!--l. 214--><p class="indent" >   [&#8217;the&#8217;, &#8217;and&#8217;, &#8217;of&#8217;, &#8217;I&#8217;, &#8217;to&#8217;, &#8217;a&#8217;, &#8217;that&#8217;, &#8217;in&#8217;, &#8217;was&#8217;, &#8217;it&#8217;]
-<!--l. 216--><p class="indent" >   [29401, 14791, 14600, 14361, 13672, 13002, 9324, 8971, 8381, 7008]
-<!--l. 218--><p class="indent" >   Now you can see why filtering by stop words is useful in learning your data.
-<!--l. 220--><p class="noindent" >
+<!--l. 214--><p class="indent" >   Unsurprisingly, without filtering for stopwords, the output is
+<!--l. 216--><p class="indent" >   [&#8217;the&#8217;, &#8217;and&#8217;, &#8217;of&#8217;, &#8217;I&#8217;, &#8217;to&#8217;, &#8217;a&#8217;, &#8217;that&#8217;, &#8217;in&#8217;, &#8217;was&#8217;, &#8217;it&#8217;]
+<!--l. 218--><p class="indent" >   [29401, 14791, 14600, 14361, 13672, 13002, 9324, 8971, 8381, 7008]
+<!--l. 220--><p class="indent" >   Now you can see why filtering by stop words is useful in learning your data.
+<!--l. 222--><p class="noindent" >
    <h4 class="subsectionHead"><span class="titlemark">4.2    </span> <a 
  id="x1-140004.2"></a>Identify Sentence Based Data:</h4>
-<!--l. 222--><p class="noindent" >NLTK also has a sentence wise tokenizer, which breaks on common sentence tokens (&#8217;.&#8217;, &#8217;!&#8217;,
+<!--l. 224--><p class="noindent" >NLTK also has a sentence wise tokenizer, which breaks on common sentence tokens (&#8217;.&#8217;, &#8217;!&#8217;,
 &#8217;?&#8217;, etc.) so let&#8217;s learn what the most common sentences are in our document.
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-12">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;sentences&#x00A0;=&#x00A0;sent_tokenize(sherlock_text1.lower())
+sentences&#x00A0;=&#x00A0;sent_tokenize(sherlock_text1.lower())
 </div>
-<!--l. 226--><p class="nopar" >
-<!--l. 228--><p class="indent" >   Similar to how we analyzed our word count, we will now analyze which sentences are the
+<!--l. 228--><p class="nopar" >
+<!--l. 230--><p class="indent" >   Similar to how we analyzed our word count, we will now analyze which sentences are the
 most common.
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-13">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;from&#x00A0;collections&#x00A0;import&#x00A0;Counter
+from&#x00A0;collections&#x00A0;import&#x00A0;Counter
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;most_frequent(inlist,&#x00A0;maxlist=10):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;occurence_count&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;Counter(inlist)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;pairs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;occurence_count.most_common(maxlist)
+&#x00A0;<br />def&#x00A0;most_frequent(inlist,&#x00A0;maxlist=10):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;occurence_count&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;Counter(inlist)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;pairs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;occurence_count.most_common(maxlist)
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;[]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common_counts&#x00A0;=&#x00A0;[]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;x&#x00A0;in&#x00A0;range(maxlist):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common.append(pairs[x][0])
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common_counts.append(pairs[x][1])
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;most_common,&#x00A0;most_common_counts
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;[]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common_counts&#x00A0;=&#x00A0;[]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;x&#x00A0;in&#x00A0;range(maxlist):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common.append(pairs[x][0])
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;most_common_counts.append(pairs[x][1])
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;most_common,&#x00A0;most_common_counts
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;top_sent,&#x00A0;sent_counts&#x00A0;=&#x00A0;most_frequent(sentences,&#x00A0;maxlist=5)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;print(top_sent)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;print(sent_counts)
+&#x00A0;<br />top_sent,&#x00A0;sent_counts&#x00A0;=&#x00A0;most_frequent(sentences,&#x00A0;maxlist=5)
+&#x00A0;<br />print(top_sent)
+&#x00A0;<br />print(sent_counts)
 </div>
-<!--l. 247--><p class="nopar" >
-<!--l. 249--><p class="indent" >   running our sentence tokenizer, the output is
-<!--l. 251--><p class="indent" >   [&#8217;i asked.&#8217;, &#8217;he asked.&#8217;, &#8217;he cried.&#8217;, &#8217;said he.&#8217;, &#8217;holmes?&#8221;&#8217;]
-<!--l. 253--><p class="indent" >   [75, 59, 52, 48, 38]
-<!--l. 255--><p class="indent" >   Meaning there were 75 sentences in our corpus that were &#8217;I asked.&#8217;
-<!--l. 257--><p class="indent" >   Now that we know a little about our document, let&#8217;s train our model.
-<!--l. 259--><p class="noindent" >
+<!--l. 249--><p class="nopar" >
+<!--l. 251--><p class="indent" >   running our sentence tokenizer, the output is
+<!--l. 253--><p class="indent" >   [&#8217;i asked.&#8217;, &#8217;he asked.&#8217;, &#8217;he cried.&#8217;, &#8217;said he.&#8217;, &#8217;holmes?&#8221;&#8217;]
+<!--l. 255--><p class="indent" >   [75, 59, 52, 48, 38]
+<!--l. 257--><p class="indent" >   Meaning there were 75 sentences in our corpus that were &#8217;I asked.&#8217;
+<!--l. 259--><p class="indent" >   Now that we know a little about our document, let&#8217;s train our model.
+<!--l. 261--><p class="noindent" >
    <h3 class="sectionHead"><span class="titlemark">5    </span> <a 
  id="x1-150005"></a>Encode Corpus</h3>
-<!--l. 261--><p class="noindent" >
+<!--l. 263--><p class="noindent" >
    <h4 class="subsectionHead"><span class="titlemark">5.1    </span> <a 
  id="x1-160005.1"></a>Data Preparation</h4>
-<!--l. 262--><p class="noindent" >For our data generation training, we don&#8217;t want to eliminate stopwords or punctuation.
+<!--l. 264--><p class="noindent" >For our data generation training, we don&#8217;t want to eliminate stopwords or punctuation.
 Therefore, we will use sherlock_2 to train as we want there to be punctuation in our final
 text.
-<!--l. 264--><p class="indent" >   The first thing we&#8217;re going to do is reset allwords to be sherlock_2 and create a label
+<!--l. 266--><p class="indent" >   The first thing we&#8217;re going to do is reset allwords to be sherlock_2 and create a label
 encoder object for it. In this case, we don&#8217;t want our label encoder to represent unique words
 in the dictionary, it is going to be the map from one hot back to our corpus. Then we want to
 train our encoder to make a one-hot version of the corpus. For more information
@@ -442,79 +444,80 @@ works.
 
                                                                   
    <div class="verbatim" id="verbatim-14">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;first&#x00A0;lets&#x00A0;make&#x00A0;our&#x00A0;sequences
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;from&#x00A0;sklearn.preprocessing&#x00A0;import&#x00A0;OneHotEncoder
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;from&#x00A0;sklearn.preprocessing&#x00A0;import&#x00A0;LabelEncoder
+#&#x00A0;first&#x00A0;lets&#x00A0;make&#x00A0;our&#x00A0;sequences
+&#x00A0;<br />from&#x00A0;sklearn.preprocessing&#x00A0;import&#x00A0;OneHotEncoder
+&#x00A0;<br />from&#x00A0;sklearn.preprocessing&#x00A0;import&#x00A0;LabelEncoder
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;set&#x00A0;it&#x00A0;up&#x00A0;so&#x00A0;we&#x00A0;can&#x00A0;encode&#x00A0;our&#x00A0;data
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;encoder&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;LabelEncoder()
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;values&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;np.array(allwords)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;int_encoded&#x00A0;&#x00A0;=&#x00A0;encoder.fit_transform(values)
+&#x00A0;<br />#&#x00A0;set&#x00A0;it&#x00A0;up&#x00A0;so&#x00A0;we&#x00A0;can&#x00A0;encode&#x00A0;our&#x00A0;data
+&#x00A0;<br />encoder&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;LabelEncoder()
+&#x00A0;<br />values&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;np.array(allwords)
+&#x00A0;<br />int_encoded&#x00A0;&#x00A0;=&#x00A0;encoder.fit_transform(values)
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;force&#x00A0;it&#x00A0;to&#x00A0;be&#x00A0;sparse&#x00A0;until&#x00A0;we&#x00A0;need&#x00A0;it&#x00A0;to&#x00A0;be&#x00A0;dense&#x00A0;when
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#we're&#x00A0;putting&#x00A0;data&#x00A0;into&#x00A0;the&#x00A0;model
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;ohot_encoder&#x00A0;=&#x00A0;OneHotEncoder()
+&#x00A0;<br />#&#x00A0;force&#x00A0;it&#x00A0;to&#x00A0;be&#x00A0;sparse&#x00A0;until&#x00A0;we&#x00A0;need&#x00A0;it&#x00A0;to&#x00A0;be&#x00A0;dense&#x00A0;when
+&#x00A0;<br />#we're&#x00A0;putting&#x00A0;data&#x00A0;into&#x00A0;the&#x00A0;model
+&#x00A0;<br />ohot_encoder&#x00A0;=&#x00A0;OneHotEncoder()
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#len(int_encoded)&#x00A0;is&#x00A0;the&#x00A0;same&#x00A0;length&#x00A0;as&#x00A0;our&#x00A0;len(allwords)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;int_encoded&#x00A0;&#x00A0;=&#x00A0;int_encoded.reshape(len(int_encoded),&#x00A0;1)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;ohot_encoded&#x00A0;=&#x00A0;ohot_encoder.fit_transform(int_encoded)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#verify&#x00A0;it&#x00A0;works
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;idx&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;int_encoded[0]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;inverted&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;encoder.inverse_transform([np.argmax(ohot_encoded[idx,&#x00A0;:])])
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;and&#x00A0;to&#x00A0;verify&#x00A0;it&#x00A0;works,&#x00A0;we'll&#x00A0;check&#x00A0;that&#x00A0;the&#x00A0;inverted&#x00A0;val&#x00A0;is
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;the&#x00A0;same&#x00A0;as&#x00A0;the&#x00A0;index&#x00A0;at&#x00A0;that&#x00A0;location
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;assert&#x00A0;allwords[idx[0]]&#x00A0;==&#x00A0;inverted[0]
+&#x00A0;<br />#len(int_encoded)&#x00A0;is&#x00A0;the&#x00A0;same&#x00A0;length&#x00A0;as&#x00A0;our&#x00A0;len(allwords)
+&#x00A0;<br />int_encoded&#x00A0;&#x00A0;=&#x00A0;int_encoded.reshape(len(int_encoded),&#x00A0;1)
+&#x00A0;<br />ohot_encoded&#x00A0;=&#x00A0;ohot_encoder.fit_transform(int_encoded)
+&#x00A0;<br />#verify&#x00A0;it&#x00A0;works
+&#x00A0;<br />idx&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;int_encoded[0]
+&#x00A0;<br />maxval&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;[np.argmax(ohot_encoded[idx,&#x00A0;:])]
+&#x00A0;<br />inverted&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;encoder.inverse_transform(maxval)
+&#x00A0;<br />#&#x00A0;and&#x00A0;to&#x00A0;verify&#x00A0;it&#x00A0;works,&#x00A0;we'll&#x00A0;check&#x00A0;that&#x00A0;the&#x00A0;inverted&#x00A0;val&#x00A0;is
+&#x00A0;<br />#&#x00A0;the&#x00A0;same&#x00A0;as&#x00A0;the&#x00A0;index&#x00A0;at&#x00A0;that&#x00A0;location
+&#x00A0;<br />assert&#x00A0;allwords[idx[0]]&#x00A0;==&#x00A0;inverted[0]
 &#x00A0;<br />&#x00A0;
 </div>
-<!--l. 290--><p class="nopar" >
-<!--l. 292--><p class="indent" >   Now we have our new word list and dictionary, we are going to create a set of sequences.
+<!--l. 293--><p class="nopar" >
+<!--l. 295--><p class="indent" >   Now we have our new word list and dictionary, we are going to create a set of sequences.
 Since Colab is RAM limited and the dataset is quite large, we are going to do a sequence of
 series of words, using SEQ_LENGTH to determine how long the sequence is and STEP to
 determine how far the steps are from each other.
-<!--l. 294--><p class="indent" >   Now generate the sequences. We are using the dictionary listed out and tied to another
+<!--l. 297--><p class="indent" >   Now generate the sequences. We are using the dictionary listed out and tied to another
 dictionary to map indexes of the dictionary to words.
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-15">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;SEQ_LENGTH&#x00A0;=&#x00A0;4
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;STEP&#x00A0;=&#x00A0;5
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;make_sequences(text,&#x00A0;seq,&#x00A0;step):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;sequences&#x00A0;&#x00A0;=&#x00A0;[]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;next_words&#x00A0;=&#x00A0;[]
+SEQ_LENGTH&#x00A0;=&#x00A0;4
+&#x00A0;<br />STEP&#x00A0;=&#x00A0;5
+&#x00A0;<br />def&#x00A0;make_sequences(text,&#x00A0;seq,&#x00A0;step):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;sequences&#x00A0;&#x00A0;=&#x00A0;[]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;next_words&#x00A0;=&#x00A0;[]
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;skip&#x00A0;every&#x00A0;so&#x00A0;step,&#x00A0;and&#x00A0;collect&#x00A0;tokens
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;i&#x00A0;in&#x00A0;range(0,&#x00A0;VOCAB_SIZE&#x00A0;-&#x00A0;seq,&#x00A0;step):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;cur_words&#x00A0;=&#x00A0;text[i:&#x00A0;i&#x00A0;+&#x00A0;seq&#x00A0;-1]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;sequence&#x00A0;=&#x00A0;[]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;idx,&#x00A0;x&#x00A0;in&#x00A0;enumerate(cur_words):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;one_hot&#x00A0;=&#x00A0;ohot_encoded[i&#x00A0;+&#x00A0;idx]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;sequence.append(one_hot)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;sequences.append(sequence)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;skip&#x00A0;every&#x00A0;so&#x00A0;step,&#x00A0;and&#x00A0;collect&#x00A0;tokens
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;i&#x00A0;in&#x00A0;range(0,&#x00A0;VOCAB_SIZE&#x00A0;-&#x00A0;seq,&#x00A0;step):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;cur_words&#x00A0;=&#x00A0;text[i:&#x00A0;i&#x00A0;+&#x00A0;seq&#x00A0;-1]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;sequence&#x00A0;=&#x00A0;[]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;idx,&#x00A0;x&#x00A0;in&#x00A0;enumerate(cur_words):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;one_hot&#x00A0;=&#x00A0;ohot_encoded[i&#x00A0;+&#x00A0;idx]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;sequence.append(one_hot)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;sequences.append(sequence)
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;next_word&#x00A0;=&#x00A0;text[i&#x00A0;+&#x00A0;seq]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;one_hot&#x00A0;=&#x00A0;ohot_encoded[i&#x00A0;+&#x00A0;seq]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;next_words.append(one_hot)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;sequences,&#x00A0;next_words
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;ohot_x,&#x00A0;ohot_y&#x00A0;=&#x00A0;make_sequences(allwords,&#x00A0;SEQ_LENGTH,&#x00A0;STEP)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;next_word&#x00A0;=&#x00A0;text[i&#x00A0;+&#x00A0;seq]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;one_hot&#x00A0;=&#x00A0;ohot_encoded[i&#x00A0;+&#x00A0;seq]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;next_words.append(one_hot)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;sequences,&#x00A0;next_words
+&#x00A0;<br />ohot_x,&#x00A0;ohot_y&#x00A0;=&#x00A0;make_sequences(allwords,&#x00A0;SEQ_LENGTH,&#x00A0;STEP)
 &#x00A0;<br />
 &#x00A0;<br />&#x00A0;&#x00A0;
 </div>
-<!--l. 318--><p class="nopar" >
-<!--l. 320--><p class="indent" >   As you can see, we are using the generated one-hot encoded indexes; however, we are
+<!--l. 321--><p class="nopar" >
+<!--l. 323--><p class="indent" >   As you can see, we are using the generated one-hot encoded indexes; however, we are
 storing them in a sparse matrix because Google Colab is RAM limited. So for our
 vocabulary, we are collecting each set of 4 words&#8211; 3 as our &#8221;current&#8221; words, and 1 as our
 &#8221;next&#8221; word. Our current words will become our test input, and our next word will
 become the training label the network is trying to learn. We are storing these in
 lists, but we will convert them to arrays when we turn them into dense one-hot
 matrices.
-<!--l. 322--><p class="noindent" >
+<!--l. 325--><p class="noindent" >
    <h3 class="sectionHead"><span class="titlemark">6    </span> <a 
  id="x1-170006"></a>Create and Run Model</h3>
-<!--l. 324--><p class="noindent" >
+<!--l. 327--><p class="noindent" >
    <h4 class="subsectionHead"><span class="titlemark">6.1    </span> <a 
  id="x1-180006.1"></a>Create Model</h4>
-<!--l. 325--><p class="noindent" >We are going to use the Nadam optimizer, and the lr is a tunable parameter. Take time to
+<!--l. 328--><p class="noindent" >We are going to use the Nadam optimizer, and the lr is a tunable parameter. Take time to
 experiment with the learning rate to see what changes. We are doing a variable model that can
                                                                   
 
@@ -527,38 +530,77 @@ or decrease this number.
 
                                                                   
    <div class="verbatim" id="verbatim-16">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;#set&#x00A0;our&#x00A0;model&#x00A0;training&#x00A0;values
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;BATCH_SIZE&#x00A0;=&#x00A0;1
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;HIDDEN_DIM&#x00A0;=&#x00A0;50&#x00A0;#&#x00A0;may&#x00A0;need&#x00A0;to&#x00A0;tune&#x00A0;this.&#x00A0;Check&#x00A0;later
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;EPOCHS&#x00A0;=&#x00A0;30
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;optimizer&#x00A0;=&#x00A0;optimizers.Nadam(lr=.001)
+#set&#x00A0;our&#x00A0;model&#x00A0;training&#x00A0;values
+&#x00A0;<br />BATCH_SIZE&#x00A0;=&#x00A0;1
+&#x00A0;<br />HIDDEN_DIM&#x00A0;=&#x00A0;50&#x00A0;#&#x00A0;may&#x00A0;need&#x00A0;to&#x00A0;tune&#x00A0;this.&#x00A0;Check&#x00A0;later
+&#x00A0;<br />EPOCHS&#x00A0;=&#x00A0;30
+&#x00A0;<br />optimizer&#x00A0;=&#x00A0;optimizers.Nadam(lr=.001)
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;create_model():
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;input_len&#x00A0;=&#x00A0;SEQ_LENGTH
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;model&#x00A0;=&#x00A0;Sequential()
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#since&#x00A0;we&#x00A0;know&#x00A0;the&#x00A0;input&#x00A0;size,&#x00A0;we&#x00A0;can&#x00A0;hard&#x00A0;code&#x00A0;this&#x00A0;input&#x00A0;shape
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;model.add(LSTM(HIDDEN_DIM,&#x00A0;input_shape=(SEQ_LENGTH,&#x00A0;VOCAB_SIZE)))
+&#x00A0;<br />def&#x00A0;create_model():
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;input_len&#x00A0;=&#x00A0;SEQ_LENGTH
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;model&#x00A0;=&#x00A0;Sequential()
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#since&#x00A0;we&#x00A0;know&#x00A0;the&#x00A0;input&#x00A0;size,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#we&#x00A0;can&#x00A0;hard&#x00A0;code&#x00A0;this&#x00A0;input&#x00A0;shape
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;model.add(LSTM(HIDDEN_DIM,&#x00A0;input_shape=(input_len,&#x00A0;VOCAB_SIZE)))
 &#x00A0;<br />
 &#x00A0;<br />
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;Add&#x00A0;Output&#x00A0;Layer
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;model.add(Dense(VOCAB_SIZE))
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;model.add(Activation('softmax'))
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;model.compile(loss='categorical_crossentropy',&#x00A0;optimizer=optimizer,&#x00A0;metrics=['mean_absolute_error',&#x00A0;"accuracy"])
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;model
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;Add&#x00A0;Output&#x00A0;Layer
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;model.add(Dense(VOCAB_SIZE))
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;model.add(Activation('softmax'))
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;model.compile(loss='categorical_crossentropy',&#x00A0;\
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;optimizer=optimizer,&#x00A0;metrics=['mean_absolute_error',&#x00A0;\
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;"accuracy"])
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;model
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;model&#x00A0;=&#x00A0;create_model()
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;use&#x00A0;model.summary()&#x00A0;to&#x00A0;see&#x00A0;the&#x00A0;layers&#x00A0;and&#x00A0;their&#x00A0;respective&#x00A0;sizes
+&#x00A0;<br />model&#x00A0;=&#x00A0;create_model()
+&#x00A0;<br />#&#x00A0;use&#x00A0;model.summary()&#x00A0;to&#x00A0;see&#x00A0;the&#x00A0;layers
+&#x00A0;<br />#&#x00A0;and&#x00A0;their&#x00A0;respective&#x00A0;sizes
 </div>
-<!--l. 350--><p class="nopar" >
-<!--l. 352--><p class="indent" >   Note that here we are monitoring the categorical cross entropy loss and monitoring the
+<!--l. 357--><p class="nopar" >
+<!--l. 359--><p class="indent" >   A LSTM is a Long Short-Term Memory model. We are using the Keras LSTM model,
+since it is easily imported. An LSTM is a Deep Learning (DL) model that has feedback
+networks. Most models in DL are feed-forward only, which means that LSTMs are
+significantly better at processing sequences of things. Since we are representing a
+sequence of words, and want to output part of that sequence, we are going to use
+LSTMs.
+<!--l. 361--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+                                                                  
+
+                                                                  
+<a 
+ id="x1-18001r4"></a>
+                                                                  
+
+                                                                  
+<!--l. 363--><p class="noindent" ><img 
+src="LSTM_wikipedia.png" alt="PIC"  
+height="400">
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;4: </span><span  
+class="content">LSTM Model</span></div><!--tex4ht:label?: x1-18001r4 -->
+                                                                  
+
+                                                                  
+<!--l. 366--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 368--><p class="indent" >   Figure&#x00A0;<a 
+href="#x1-18001r4">4<!--tex4ht:ref: fig:lstm --></a> shows the feed-back style of an LSTM. This image represents only one model
+of an LSTM (a peephole LSTM), but from the image, you can see that the current cell&#8217;s
+output (ct) feeds back into the input to the (ct) layer. This means that the model trains on the
+current layer, but also retains information from previous layers. Since words in
+a sentence are related to the previous words, the LSTM is a model that fits well
+with text and document style data. For more information and for the source code
+to Keras&#8217; implementation the Keras LSTM model reference page can be found
+<a 
+href="https://keras.io/api/layers/recurrent_layers/lstm/" >here</a>.
+<!--l. 373--><p class="indent" >   Note that here we are monitoring the categorical cross entropy loss and monitoring the
 total error and the accuracy. This allows us to see how accurate the model is becoming
 during training, and gives a metric that is more human understandable than loss
 values.
-<!--l. 355--><p class="noindent" >
    <h4 class="subsectionHead"><span class="titlemark">6.2    </span> <a 
  id="x1-190006.2"></a>Writing Inline One-Hot Encoding</h4>
-<!--l. 357--><p class="noindent" >To do this, we need to replace the data keras generator to supply a new batch every
+<!--l. 378--><p class="noindent" >To do this, we need to replace the data keras generator to supply a new batch every
 time with the one-hot batch. This way we don&#8217;t overwhelm the Colab notebook.
 Based on <a 
 href="https://github.com/keras-team/keras/issues/9707" >this Keras help page</a> we can get the format and necessary elements of the
@@ -567,125 +609,134 @@ Generator.
 
                                                                   
    <div class="verbatim" id="verbatim-17">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;##&#x00A0;Keras&#x00A0;has&#x00A0;a&#x00A0;native&#x00A0;shuffler,&#x00A0;but&#x00A0;since&#x00A0;our&#x00A0;output&#x00A0;isn't&#x00A0;one&#x00A0;hot,&#x00A0;we&#x00A0;need
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;##&#x00A0;to&#x00A0;shuffle&#x00A0;the&#x00A0;data&#x00A0;to&#x00A0;ensure&#x00A0;it&#x00A0;does&#x00A0;get&#x00A0;shuffled.
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;class&#x00A0;Generator(Sequence):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;Class&#x00A0;is&#x00A0;a&#x00A0;dataset&#x00A0;wrapper&#x00A0;for&#x00A0;better&#x00A0;training&#x00A0;performance
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;__init__(self,&#x00A0;x_set,&#x00A0;y_set,&#x00A0;vocab_size,&#x00A0;batch_size=128):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;self.x,&#x00A0;self.y&#x00A0;=&#x00A0;x_set,&#x00A0;y_set
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;self.batch_size&#x00A0;=&#x00A0;batch_size
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;self.indices&#x00A0;=&#x00A0;np.arange(self.x.shape[0])&#x00A0;#&#x00A0;all&#x00A0;possible&#x00A0;sequences
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;self.vocab_size&#x00A0;=&#x00A0;vocab_size
+##&#x00A0;Keras&#x00A0;has&#x00A0;a&#x00A0;native&#x00A0;shuffler,&#x00A0;but&#x00A0;since&#x00A0;our&#x00A0;output&#x00A0;isn't
+&#x00A0;<br />##one&#x00A0;hot,&#x00A0;we&#x00A0;needto&#x00A0;shuffle&#x00A0;the&#x00A0;data&#x00A0;to&#x00A0;ensure&#x00A0;it
+&#x00A0;<br />##&#x00A0;is&#x00A0;the&#x00A0;indexed&#x00A0;item&#x00A0;but&#x00A0;one-hot-ified
+&#x00A0;<br />class&#x00A0;Generator(Sequence):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;Class&#x00A0;is&#x00A0;a&#x00A0;dataset&#x00A0;wrapper&#x00A0;for&#x00A0;better&#x00A0;training&#x00A0;performance
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;__init__(self,&#x00A0;x_set,&#x00A0;y_set,&#x00A0;vocab_size,&#x00A0;batch_size=128):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;self.x,&#x00A0;self.y&#x00A0;=&#x00A0;x_set,&#x00A0;y_set
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;self.batch_size&#x00A0;=&#x00A0;batch_size
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;self.indices&#x00A0;=&#x00A0;np.arange(self.x.shape[0])
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;all&#x00A0;possible&#x00A0;sequences
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;self.vocab_size&#x00A0;=&#x00A0;vocab_size
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;__len__(self):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;math.ceil(self.x.shape[0]&#x00A0;/&#x00A0;self.batch_size)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;__len__(self):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;math.ceil(self.x.shape[0]&#x00A0;/&#x00A0;self.batch_size)
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;__getitem__(self,&#x00A0;idx):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;inds&#x00A0;=&#x00A0;self.indices[idx&#x00A0;&#x22C6;&#x00A0;self.batch_size:(idx&#x00A0;+&#x00A0;1)&#x00A0;&#x22C6;&#x00A0;self.batch_size]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;indexed_x&#x00A0;=&#x00A0;self.x[inds]&#x00A0;#&#x00A0;sequences
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;indexed_y&#x00A0;=&#x00A0;self.y[inds]&#x00A0;#&#x00A0;next_words
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;__getitem__(self,&#x00A0;idx):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;value&#x00A0;=&#x00A0;self.batch_size:(idx&#x00A0;+&#x00A0;1)&#x00A0;&#x22C6;&#x00A0;self.batch_size
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;inds&#x00A0;=&#x00A0;self.indices[idx&#x00A0;&#x22C6;&#x00A0;value]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;indexed_x&#x00A0;=&#x00A0;self.x[inds]&#x00A0;#&#x00A0;sequences
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;indexed_y&#x00A0;=&#x00A0;self.y[inds]&#x00A0;#&#x00A0;next_words
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;we&#x00A0;need&#x00A0;to&#x00A0;do&#x00A0;batching,&#x00A0;so&#x00A0;use&#x00A0;bool&#x00A0;to&#x00A0;save&#x00A0;space&#x00A0;(we&#x00A0;don't&#x00A0;need&#x00A0;an&#x00A0;int)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;it's&#x00A0;one&#x00A0;hot&#x00A0;encoding&#x00A0;so&#x00A0;bool&#x00A0;works&#x00A0;fine
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;x&#x00A0;=&#x00A0;&#x00A0;[batch,&#x00A0;seq_length,&#x00A0;vocab_size]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;y&#x00A0;=&#x00A0;[batch,&#x00A0;vocab_size]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;for&#x00A0;y&#x00A0;it's&#x00A0;just&#x00A0;an&#x00A0;array&#x00A0;of&#x00A0;sparse&#x00A0;matricies,&#x00A0;so&#x00A0;just&#x00A0;convert&#x00A0;it
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;batch_y&#x00A0;=&#x00A0;np.asarray(indexed_y[0].todense())
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;we&#x00A0;need&#x00A0;to&#x00A0;do&#x00A0;batching,&#x00A0;so&#x00A0;use&#x00A0;bool
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;to&#x00A0;save&#x00A0;space&#x00A0;(we&#x00A0;don't&#x00A0;need&#x00A0;an&#x00A0;int)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;it's&#x00A0;one&#x00A0;hot&#x00A0;encoding&#x00A0;so&#x00A0;bool&#x00A0;works&#x00A0;fine
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;x&#x00A0;=&#x00A0;&#x00A0;[batch,&#x00A0;seq_length,&#x00A0;vocab_size]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;y&#x00A0;=&#x00A0;[batch,&#x00A0;vocab_size]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;for&#x00A0;y&#x00A0;it's&#x00A0;just&#x00A0;an&#x00A0;array&#x00A0;of&#x00A0;sparse&#x00A0;matricies,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#so&#x00A0;just&#x00A0;convert&#x00A0;it
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;batch_y&#x00A0;=&#x00A0;np.asarray(indexed_y[0].todense())
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;for&#x00A0;x,&#x00A0;it's&#x00A0;a&#x00A0;little&#x00A0;harder,&#x00A0;since&#x00A0;it's&#x00A0;an&#x00A0;array&#x00A0;of&#x00A0;3&#x00A0;dense&#x00A0;matricies
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;first&#x00A0;convert&#x00A0;it&#x00A0;to&#x00A0;a&#x00A0;list,&#x00A0;then&#x00A0;convert&#x00A0;it&#x00A0;to&#x00A0;a&#x00A0;dense&#x00A0;matrix,&#x00A0;then
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;convert&#x00A0;it&#x00A0;back&#x00A0;into&#x00A0;numpy&#x00A0;array
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;batch_x&#x00A0;=&#x00A0;[]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;batchidx,&#x00A0;bat&#x00A0;in&#x00A0;enumerate(indexed_x):&#x00A0;#&#x00A0;for&#x00A0;every&#x00A0;seq&#x00A0;in&#x00A0;the&#x00A0;batch
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;batch_x.append(bat[0].todense())
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;batch_x&#x00A0;=&#x00A0;np.array(batch_x)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;for&#x00A0;x,&#x00A0;it's&#x00A0;a&#x00A0;little&#x00A0;harder,&#x00A0;since
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;it's&#x00A0;an&#x00A0;array&#x00A0;of&#x00A0;3&#x00A0;dense&#x00A0;matricies
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;first&#x00A0;convert&#x00A0;it&#x00A0;to&#x00A0;a&#x00A0;list,&#x00A0;then&#x00A0;convert
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#it&#x00A0;to&#x00A0;a&#x00A0;dense&#x00A0;matrix,&#x00A0;then
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;convert&#x00A0;it&#x00A0;back&#x00A0;into&#x00A0;numpy&#x00A0;array
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;batch_x&#x00A0;=&#x00A0;[]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;batchidx,&#x00A0;bat&#x00A0;in&#x00A0;enumerate(indexed_x):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;for&#x00A0;every&#x00A0;seq&#x00A0;in&#x00A0;the&#x00A0;batch
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;batch_x.append(bat[0].todense())
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;batch_x&#x00A0;=&#x00A0;np.array(batch_x)
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;batch_x,&#x00A0;batch_y
-&#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;batch_x,&#x00A0;batch_y
-&#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;on_epoch_end(self):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;np.random.shuffle(self.indices)
-&#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;train_generator&#x00A0;=&#x00A0;Generator(np.array(ohot_x),&#x00A0;np.array(ohot_y),&#x00A0;VOCAB_SIZE,&#x00A0;batch_size=BATCH_SIZE)
-</div>
-<!--l. 401--><p class="nopar" >
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;batch_x,&#x00A0;batch_y
                                                                   
 
                                                                   
-<!--l. 403--><p class="indent" >   Essentially the only change we made to the original, is that we are forcing our x and y
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;on_epoch_end(self):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;np.random.shuffle(self.indices)
+&#x00A0;<br />
+&#x00A0;<br />x&#x00A0;=&#x00A0;np.array(ohot_x)
+&#x00A0;<br />y&#x00A0;=&#x00A0;np.array(ohot_y)
+&#x00A0;<br />train_generator&#x00A0;=&#x00A0;Generator(x,&#x00A0;y,&#x00A0;VOCAB_SIZE)
+</div>
+<!--l. 430--><p class="nopar" >
+<!--l. 432--><p class="indent" >   Essentially the only change we made to the original, is that we are forcing our x and y
 arrays into dense matricies. In the __getitem__ function. Keras naturally shuffles the dataset
 each epoch, so we are indexing into that item, and converting the one hot vectors
 for input and output to be a dense version. For the input vector, that is a [batch,
 seq_length, vocab_size] sized array, and for the label vector that is [batch, vocab_size] in
 size.
-<!--l. 405--><p class="indent" >   Now that our data is ready to put into the model, let&#8217;s call it by calling the generator class
+<!--l. 434--><p class="indent" >   Now that our data is ready to put into the model, let&#8217;s call it by calling the generator class
 and putting that as the input to the model.
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-18">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;model.fit(train_generator,&#x00A0;epochs=EPOCHS,&#x00A0;verbose=1,&#x00A0;batch_size=BATCH_SIZE)
+model.fit(train_generator,&#x00A0;epochs=EPOCHS,&#x00A0;\
+&#x00A0;<br />verbose=1,&#x00A0;batch_size=BATCH_SIZE)
 </div>
-<!--l. 409--><p class="nopar" >
-<!--l. 411--><p class="indent" >   <hr class="figure"><div class="figure" 
+<!--l. 439--><p class="nopar" >
+<!--l. 441--><p class="indent" >   <hr class="figure"><div class="figure" 
 >
                                                                   
 
                                                                   
 <a 
- id="x1-19001r4"></a>
+ id="x1-19001r5"></a>
                                                                   
 
                                                                   
-<!--l. 413--><p class="noindent" ><img 
+<!--l. 443--><p class="noindent" ><img 
 src="TrainingOutput.png" alt="PIC"  
- height="500">
+height="500">
 <br /> <div class="caption" 
-><span class="id">Figure&#x00A0;4: </span><span  
-class="content">Training Output From Model</span></div><!--tex4ht:label?: x1-19001r4 -->
+><span class="id">Figure&#x00A0;5: </span><span  
+class="content">Training Output From Model</span></div><!--tex4ht:label?: x1-19001r5 -->
                                                                   
 
                                                                   
-<!--l. 416--><p class="indent" >   </div><hr class="endfigure">
-<!--l. 418--><p class="indent" >   When we do that, you&#8217;ll see outputs on the bottom of that Colab text box, they should
-look like Figure&#x00A0;<span 
-class="ptmb7t-">??</span>. This will allow you to monitor the progress of your training to verify
-that it is increasing in accuracy and decreasing in loss.
-<!--l. 420--><p class="indent" >   If that&#8217;s going really slow for you (likely). We can add a GPU to speed up the model.fit
+<!--l. 446--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 448--><p class="indent" >   When we do that, you&#8217;ll see outputs on the bottom of that Colab text box, they should
+look like Figure&#x00A0;<a 
+href="#x1-19001r5">5<!--tex4ht:ref: fig:train --></a>. This will allow you to monitor the progress of your training to verify that
+it is increasing in accuracy and decreasing in loss.
+<!--l. 450--><p class="indent" >   If that&#8217;s going really slow for you (likely). We can add a GPU to speed up the model.fit
 process.
    <h4 class="subsectionHead"><span class="titlemark">6.3    </span> <a 
  id="x1-200006.3"></a>Speed Up Using Tensor GPU</h4>
-<!--l. 424--><p class="noindent" >To use the GPU to train (this will save you so much time), attach a GPU to your Colab. To do
+<!--l. 454--><p class="noindent" >To use the GPU to train (this will save you so much time), attach a GPU to your Colab. To do
 this go to the Edit bar, and select Notebook Settings. From here you&#8217;ll select GPU to run your
 network. TPUs require a lot of extra code to run, so make sure you select GPU, not
 TPU.
-<!--l. 426--><p class="indent" >   <hr class="figure"><div class="figure" 
+<!--l. 456--><p class="indent" >   <hr class="figure"><div class="figure" 
 >
                                                                   
 
                                                                   
 <a 
- id="x1-20001r5"></a>
+ id="x1-20001r6"></a>
                                                                   
 
                                                                   
-<!--l. 428--><p class="noindent" ><img 
+<!--l. 458--><p class="noindent" ><img 
 src="GPUAccel.png" alt="PIC"  
- height="200">
+height="200">
 <br /> <div class="caption" 
-><span class="id">Figure&#x00A0;5: </span><span  
-class="content">Use GPU to Accelerate Training</span></div><!--tex4ht:label?: x1-20001r5 -->
+><span class="id">Figure&#x00A0;6: </span><span  
+class="content">Use GPU to Accelerate Training</span></div><!--tex4ht:label?: x1-20001r6 -->
                                                                   
 
                                                                   
-<!--l. 431--><p class="indent" >   </div><hr class="endfigure">
-<!--l. 433--><p class="indent" >   Since GPU is already enabled in Tensorflow 2.0 (the default Tensorflow Google Colab
+<!--l. 461--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 463--><p class="indent" >   Since GPU is already enabled in Tensorflow 2.0 (the default Tensorflow Google Colab
 sources) you can run this like you would with a CPU. It does not require any changes to the
 code.
    <h4 class="subsectionHead"><span class="titlemark">6.4    </span> <a 
  id="x1-210006.4"></a>Using Model Generate Text</h4>
-<!--l. 437--><p class="noindent" >We have a trained model, now we can generate text from it. To do this we want more than just
+<!--l. 467--><p class="noindent" >We have a trained model, now we can generate text from it. To do this we want more than just
 one output word, so we are going to generate words in a function, and we are going to
 generate GENERATE_LENGTH number of words. We&#8217;re going to pick a randomly
 generated integer to get a word to start, then we are going to use the same random number to
@@ -699,50 +750,53 @@ sentence.
 
                                                                   
    <div class="verbatim" id="verbatim-19">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;method&#x00A0;for&#x00A0;generating&#x00A0;text
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;GENERATE_LENGTH&#x00A0;=&#x00A0;20
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;def&#x00A0;generate_text(model,&#x00A0;length,&#x00A0;text_size):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;first&#x00A0;get&#x00A0;a&#x00A0;random&#x00A0;word&#x00A0;as&#x00A0;our&#x00A0;starting&#x00A0;point&#x00A0;(input)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;ix&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;[np.random.randint(text_size-SEQ_LENGTH)&#x00A0;+&#x00A0;SEQ_LENGTH]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;val&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;[np.argmax(ohot_encoded[idx,&#x00A0;:])]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;y_char&#x00A0;=&#x00A0;np.ndarray.tolist(encoder.inverse_transform(val))
+#&#x00A0;method&#x00A0;for&#x00A0;generating&#x00A0;text
+&#x00A0;<br />GENERATE_LENGTH&#x00A0;=&#x00A0;20
+&#x00A0;<br />def&#x00A0;generate_text(model,&#x00A0;length,&#x00A0;text_size):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;first&#x00A0;get&#x00A0;a&#x00A0;random&#x00A0;word&#x00A0;as&#x00A0;our&#x00A0;starting&#x00A0;point&#x00A0;(input)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;ix&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;[np.random.randint(text_size-SEQ_LENGTH)&#x00A0;+&#x00A0;SEQ_LENGTH]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;val&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;[np.argmax(ohot_encoded[idx,&#x00A0;:])]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;en&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;=&#x00A0;encoder.inverse_transform(val)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;y_char&#x00A0;=&#x00A0;np.ndarray.tolist(en)
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;this&#x00A0;is&#x00A0;the&#x00A0;output&#x00A0;text,&#x00A0;it'll&#x00A0;be&#x00A0;length&#x00A0;long
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;i&#x00A0;in&#x00A0;range(length):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#try:
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;one&#x00A0;hot&#x00A0;encode&#x00A0;the&#x00A0;current&#x00A0;word
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X_words&#x00A0;=&#x00A0;[]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;n&#x00A0;in&#x00A0;range(SEQ_LENGTH):
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;indexer&#x00A0;=&#x00A0;ix[0]&#x00A0;-&#x00A0;SEQ_LENGTH&#x00A0;+&#x00A0;n
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X&#x00A0;=&#x00A0;ohot_encoded[indexer,&#x00A0;:]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X&#x00A0;=&#x00A0;X.todense()
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X_words.append(X)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X_words&#x00A0;=&#x00A0;np.array(X_words)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#then&#x00A0;the&#x00A0;index&#x00A0;changes&#x00A0;to&#x00A0;the&#x00A0;predicted&#x00A0;word&#x00A0;and&#x00A0;we&#x00A0;continue
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;ix&#x00A0;=&#x00A0;[np.argmax(model.predict(X_words,&#x00A0;1))]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;val&#x00A0;=&#x00A0;[np.argmax(ohot_encoded[ix,&#x00A0;:])]
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;y_char.append(np.ndarray.tolist(encoder.inverse_transform(val))[0])
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#except:
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;&#x00A0;&#x00A0;&#x00A0;continue
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;this&#x00A0;is&#x00A0;the&#x00A0;output&#x00A0;text,&#x00A0;it'll&#x00A0;be&#x00A0;length&#x00A0;long
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;i&#x00A0;in&#x00A0;range(length):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#try:
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;one&#x00A0;hot&#x00A0;encode&#x00A0;the&#x00A0;current&#x00A0;word
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X_words&#x00A0;=&#x00A0;[]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;n&#x00A0;in&#x00A0;range(SEQ_LENGTH):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;indexer&#x00A0;=&#x00A0;ix[0]&#x00A0;-&#x00A0;SEQ_LENGTH&#x00A0;+&#x00A0;n
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X&#x00A0;=&#x00A0;ohot_encoded[indexer,&#x00A0;:]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X&#x00A0;=&#x00A0;X.todense()
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X_words.append(X)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;X_words&#x00A0;=&#x00A0;np.array(X_words)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#then&#x00A0;the&#x00A0;index&#x00A0;changes&#x00A0;to&#x00A0;the&#x00A0;predicted&#x00A0;word
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;ix&#x00A0;=&#x00A0;[np.argmax(model.predict(X_words,&#x00A0;1))]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;val&#x00A0;=&#x00A0;[np.argmax(ohot_encoded[ix,&#x00A0;:])]
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;en&#x00A0;&#x00A0;=&#x00A0;encoder.inverse_transform(val)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;y_char.append(np.ndarray.tolist(en)[0])
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#except:
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;&#x00A0;&#x00A0;&#x00A0;continue
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;then&#x00A0;combine&#x00A0;all&#x00A0;the&#x00A0;words&#x00A0;into&#x00A0;a&#x00A0;sentence
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;('&#x00A0;').join(y_char)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;then&#x00A0;combine&#x00A0;all&#x00A0;the&#x00A0;words&#x00A0;into&#x00A0;a&#x00A0;sentence
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;('&#x00A0;').join(y_char)
 &#x00A0;<br />
 &#x00A0;<br />generate_text(model,&#x00A0;GENERATE_LENGTH,&#x00A0;len(allwords))
 &#x00A0;<br />&#x00A0;
 </div>
-<!--l. 471--><p class="nopar" >
-<!--l. 473--><p class="indent" >   This should write out generated text. Here is the example output text that mine
+<!--l. 503--><p class="nopar" >
+<!--l. 505--><p class="indent" >   This should write out generated text. Here is the example output text that mine
 gave:
                                                                   
 
                                                                   
    <div class="verbatim" id="verbatim-20">
-&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;must&#x00A0;he&#x00A0;mixed&#x00A0;gregson&#x00A0;pass&#x00A0;to&#x00A0;here&#x00A0;said&#x00A0;and&#x00A0;her&#x00A0;i&#x00A0;of&#x00A0;in&#x00A0;and&#x00A0;still&#x00A0;redskins&#x00A0;horsemen&#x00A0;falling&#x00A0;to&#x00A0;for&#x00A0;refer
+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;must&#x00A0;he&#x00A0;mixed&#x00A0;gregson&#x00A0;pass&#x00A0;to&#x00A0;here&#x00A0;said&#x00A0;and&#x00A0;her&#x00A0;i&#x00A0;of&#x00A0;in
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;and&#x00A0;still&#x00A0;redskins&#x00A0;horsemen&#x00A0;falling&#x00A0;to&#x00A0;for&#x00A0;refer
 &#x00A0;<br />&#x00A0;
 </div>
-<!--l. 477--><p class="nopar" >
-<!--l. 479--><p class="indent" >   Congratulations! You have now generated a document!
+<!--l. 510--><p class="nopar" >
+<!--l. 512--><p class="indent" >   Congratulations! You have now generated a document!
     
 </body></html> 
 
